@@ -9,4 +9,5 @@ type Testmodule {
 
 type Query {
   isTest: Testmodule!
+  returnArray(houOnly: Boolean!): [Testmodule!]!
 }

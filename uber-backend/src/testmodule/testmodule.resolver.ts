@@ -1,9 +1,10 @@
 import { Resolver, Query } from '@nestjs/graphql';
+import { Testmodule } from './entities/testmodule.entity';
 
-@Resolver()
+@Resolver(of => Testmodule)
 export class TestmoduleResolver {
-	@Query(/*()*/returns => Boolean)	// for graphql( returns means nothing. same as _ )
-	isPizzaGood(): Boolean /* for typescript */{
+	@Query(/*()*/returns => Testmodule)	// for graphql( returns means nothing. same as _ )
+	isTest() /* for typescript */{
 		return true;
 	}
 }

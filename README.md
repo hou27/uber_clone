@@ -50,3 +50,8 @@ local   replication     all                                     peer
 host    replication     all             127.0.0.1/32            md5
 host    replication     all             ::1/128                 md5
 ```
+
+like dotenv in nestjs
+```
+npm i --save @nestjs/config
+```

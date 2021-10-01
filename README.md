@@ -51,7 +51,9 @@ host    replication     all             127.0.0.1/32            md5
 host    replication     all             ::1/128                 md5
 ```
 
-like dotenv in nestjs
+[like dotenv in nestjs](https://docs.nestjs.com/techniques/configuration)
 ```
 npm i --save @nestjs/config
 ```
+
+[joi for validation](https://joi.dev/api/?v=17.4.2)

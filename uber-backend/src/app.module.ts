@@ -4,6 +4,7 @@ import { join } from 'path';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
 	imports: [
@@ -11,6 +12,14 @@ import { ConfigModule } from '@nestjs/config';
 			isGlobal: true, // application 어디서나 config module에 접근 가능하도록.
 			envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
 			ignoreEnvFile: process.env.NODE_ENV === 'prod', // deploy할 때 env파일을 사용하지 않는 옵션
+			validationSchema: Joi.object({
+				NODE_ENV: Joi.string().valid('dev', 'prod').required(),
+				DB_HOST: Joi.string().required(),
+				DB_PORT: Joi.string().required(),
+				DB_USERNAME: Joi.string().required(),
+				DB_PW: Joi.string().required(),
+				DB_NAME: Joi.string().required(),
+			}),
 		}),
 		TypeOrmModule.forRoot({
 			type: 'postgres',

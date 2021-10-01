@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()	// ObjectType for graphql
 @Entity()	// Entity for typeorm
-export class Restaurant {
+export class Restaurant {	// Data Mapper pattern
   @PrimaryGeneratedColumn()
   @Field(type => Number)
   id: number;

@@ -6,21 +6,16 @@ CREATE DATABASE uber_eats;
 
 ALTER USER postgres WITH PASSWORD 'didc001!!';
 ```
-
-
+  
+first test  
 ```
-first test
-
 mutation {
   createRestaurant(input:{name: "first test", isVegan: false, address: "K", ownersName: "test", categoryName: "test value"})
 }
 
 SELECT * FROM restaurant;
 ```
-
 ```
-first test
-
 mutation {
   updateRestaurant(input: {
     id:3,
@@ -31,4 +26,20 @@ mutation {
 }
 
 SELECT * FROM restaurant;
+```
+  
+first user test  
+```
+mutation {
+  createAccount(input: {
+    email:"test@gmail.com",
+    password:"12345",
+    role:Client
+  }) {
+    ok
+    error
+  }
+}
+
+SELECT * FROM user;
 ```

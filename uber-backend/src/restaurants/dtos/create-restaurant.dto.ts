@@ -1,32 +1,16 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, InputType, OmitType } from '@nestjs/graphql';
 import { IsBoolean, IsString, Length } from 'class-validator';
+import { Restaurant } from '../entities/restaurant.entity';
 
-@ArgsType()
-export class CreateRestaurantDto {
-  @Field(type => String)
-  @IsString()
-  @Length(5, 10)
-  name: string;
+@InputType()
+export class CreateRestaurantDto extends OmitType(
+	Restaurant,
+	['id'],
+	InputType /* add an arg to fix err */
+) {} // omit id in restaurant
 
-  @Field(type => Boolean)
-  @IsBoolean()
-  isVegan: boolean;
-
-  @Field(type => String)
-  @IsString()
-  address: string;
-
-  @Field(type => String)
-  @IsString()
-  ownersName: string;
-}
-/* on graphqlplayground works well
-mutation {
-  createRestaurant(
-    name: "1241254wre1221214",
-	isVegan: false,
-    address: "12509294",
-    ownersName: "HOu",
-  )
-}
-*/
+/**
+ * If the parent and child types are different,
+ * (e.g., the parent is decorated with @ObjectType),
+ * we would pass InputType as the second argument.
+ */

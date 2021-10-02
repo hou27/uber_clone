@@ -24,11 +24,13 @@ npm install --save @nestjs/typeorm typeorm pg
 ```
 install in goorm.io
 
-sudo apt update && sudo apt install postgresql postgresql-contrib
+	sudo apt update && sudo apt install postgresql postgresql-contrib
 
-Success. You can now start the database server using:
+database server using:
 
     /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
+	
+	/usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main stop -m fast
 ```
 ```
 (pg_hba.conf default setting)
@@ -56,4 +58,6 @@ host    replication     all             ::1/128                 md5
 npm i --save @nestjs/config
 ```
 
-[joi for validation](https://joi.dev/api/?v=17.4.2)
+[joi for validation](https://joi.dev/api/?v=17.4.2)  
+
+[Mapped types(Entitiy generates  db table, graphql type, dto)](https://docs.nestjs.com/graphql/mapped-types)  

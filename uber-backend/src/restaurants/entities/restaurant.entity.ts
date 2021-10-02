@@ -17,13 +17,13 @@ export class Restaurant {
 	@Length(5)
 	name: string;
 
-	 @Field(type => Boolean, { nullable: true })
+	@Field((type) => Boolean, { nullable: true })
 	@Column({ default: false }) // set default
 	@IsOptional() // it can be optional
 	@IsBoolean()
 	isVegan: boolean;
 
-	@Field(type => String, { defaultValue: '수지' })
+	@Field((type) => String, { defaultValue: '수지' })
 	@Column()
 	@IsString()
 	address: string;

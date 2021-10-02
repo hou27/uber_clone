@@ -12,6 +12,11 @@ export class UserResolver {
 		return true;
 	}
 
+	@Query((returns) => [User])
+	users(): Promise<User[]> {
+		return this.usersService.getAll();
+	}
+	
 	@Mutation((returns) => CreateAccountOutput)
 	async createAccount(
 		@Args('input') createAccountInput: CreateAccountInput

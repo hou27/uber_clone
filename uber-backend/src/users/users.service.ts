@@ -11,6 +11,10 @@ export class UserService {
 		private readonly users: Repository<User>
 	) {}
 
+	getAll(): Promise<User[]> {
+		return this.users.find();
+	}
+	
 	async createAccount({
 		email,
 		password,

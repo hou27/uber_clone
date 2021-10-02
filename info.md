@@ -41,5 +41,5 @@ mutation {
   }
 }
 
-SELECT * FROM user;
+SELECT * FROM public.user;
 ```

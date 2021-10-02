@@ -17,3 +17,18 @@ mutation {
 
 SELECT * FROM restaurant;
 ```
+
+```
+first test
+
+mutation {
+  updateRestaurant(input: {
+    id:3,
+    data: {
+      name: "updated first"
+    }
+  })
+}
+
+SELECT * FROM restaurant;
+```

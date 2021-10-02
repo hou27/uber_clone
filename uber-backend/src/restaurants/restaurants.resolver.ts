@@ -26,8 +26,16 @@ export class RestaurantResolver {
 		}
 	}
 
-	@Mutation((returns) => Boolean) // ArgsType을 쓴다면 비워두어야 하고 InputType을 쓴다면 인자에 이름이 있어야한다.
-	async updateRestaurant(@Args('input') updateRestaurantDto: UpdateRestaurantDto) {
-		return true;
+	@Mutation((returns) => Boolean)
+	async updateRestaurant(
+		@Args('input') updateRestaurantDto: UpdateRestaurantDto
+	): Promise<boolean> {
+		try {
+			await this.restaurantService.updateRestaurant(updateRestaurantDto);
+			return true;
+		} catch (e) {
+			console.log(e);
+			return false;
+		}
 	}
 }

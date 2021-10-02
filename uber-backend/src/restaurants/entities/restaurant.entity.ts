@@ -1,9 +1,9 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsString, Length } from 'class-validator';
+import { IsBoolean, IsString, Length, IsOptional } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // Schema must contain uniquely named types(Second way to fix err)
-@InputType({ isAbstract: true })	// isAbstract : do not add to Schema
+@InputType({ isAbstract: true }) // isAbstract : do not add to Schema
 @ObjectType()
 @Entity()
 export class Restaurant {
@@ -17,8 +17,9 @@ export class Restaurant {
 	@Length(5)
 	name: string;
 
-	@Field((type) => Boolean)
-	@Column()
+	@Field((type) => Boolean, { defaultValue: false }) // set default
+	@Column({ default: false }) // set default
+	@IsOptional() // it can be optional
 	@IsBoolean()
 	isVegan: boolean;
 

@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { CreateAccountInput } from './dtos/create-account.dto';
-import { LoginInput } from './dtos/login.dto';
+import { CreateAccountInput, CreateAccountOutput } from './dtos/create-account.dto';
+import { LoginInput, LoginOutput } from './dtos/login.dto';
+import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
 	constructor(
 		@InjectRepository(User)
-		private readonly users: Repository<User>
+		private readonly users: Repository<User>,
+		private readonly config: ConfigService	// app.module에서 Global로 ConfigModule을 import했으므로 users.module에서 다시 import해줄 필요 x
 	) {}
 
 	getAll(): Promise<User[]> {
@@ -20,7 +23,7 @@ export class UserService {
 		email,
 		password,
 		role,
-	}: CreateAccountInput): Promise<{ ok: boolean; error?: string }> {
+	}: CreateAccountInput): Promise<CreateAccountOutput /*{ ok: boolean; error?: string }*/> {
 		try {
 			const exists = await this.users.findOne({ email });
 			if (exists) {
@@ -36,7 +39,7 @@ export class UserService {
 	async login({
 		email,
 		password,
-	}: LoginInput): Promise<{ ok: boolean; error?: string; token?: string }> {
+	}: LoginInput): Promise<LoginOutput /*{ ok: boolean; error?: string; token?: string }*/> {
 		// make a JWT and give it to the user
 		try {
 			const user = await this.users.findOne({ email });
@@ -53,6 +56,10 @@ export class UserService {
 					error: 'Wrong password',
 				};
 			}
+			const token = jwt.sign(
+				{ id: user.id },
+				this.config.get('SECRET_KEY')/* process.env.SECRET_KEY */
+			);
 			return {
 				ok: true,
 				token: 'lalalalaalala',

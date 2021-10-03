@@ -12,7 +12,11 @@ export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private readonly users: Repository<User>,
-		private readonly config: ConfigService	// app.module에서 Global로 ConfigModule을 import했으므로 users.module에서 다시 import해줄 필요 x
+		private readonly config: ConfigService
+		/** Dependency Injection
+		 * app.module에서 Global로 ConfigModule을 import했으므로 
+		 * users.module에서 다시 import해줄 필요 x
+		 */
 	) {}
 
 	getAll(): Promise<User[]> {
@@ -58,7 +62,7 @@ export class UserService {
 			}
 			const token = jwt.sign(
 				{ id: user.id },
-				this.config.get('SECRET_KEY')/* process.env.SECRET_KEY */
+				this.config.get('SECRET_KEY') /* process.env.SECRET_KEY */
 			);
 			return {
 				ok: true,

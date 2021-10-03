@@ -55,3 +55,21 @@ mutation {
   }
 }
 ```
+
+check middleware
+```
+mutation {
+  login(input: {
+    email:"test@gmail.com",
+    password:"12345",
+  }) {
+    ok
+    error
+    token
+  }
+}
+HTTP HEADERS
+{
+  "X-JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjMzMjQzNTQwfQ.vYiKS-Yt2fWiB6elSIZgVADPv_odRZZHQc_fsll82m4"
+}
+```

@@ -38,7 +38,8 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 			entities: [User],
 		}),
 		GraphQLModule.forRoot({
-			autoSchemaFile: true /*join(process.cwd(), 'src/schema.gql')*/,
+			autoSchemaFile: true,
+			context: async ({ req }) => ({ user: req['user'] }),	// context is called each req.
 		}),
 		UsersModule,
 		CommonModule,
@@ -49,11 +50,8 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 	controllers: [],
 	providers: [],
 })
-
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
-		consumer
-			.apply(JwtMiddleware)
-			.forRoutes({ path: '/graphql', method: RequestMethod.ALL });
+		consumer.apply(JwtMiddleware).forRoutes({ path: '/graphql', method: RequestMethod.ALL });
 	}
 }

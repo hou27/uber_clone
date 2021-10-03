@@ -6,9 +6,9 @@ export class CreateAccountInput extends PickType(User, ['email', 'password', 'ro
 
 @ObjectType()
 export class CreateAccountOutput {
-	@Field((type) => String, { nullable: true })
-	err?: string;
-
 	@Field((type) => Boolean)
 	ok: boolean;
+
+	@Field((type) => String, { nullable: true })
+	err?: string;
 }

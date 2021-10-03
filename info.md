@@ -37,11 +37,21 @@ mutation {
     role:Client
   }) {
     ok
-    err
+    error
   }
 }
 
 SELECT * FROM public.user;
 
 DELETE FROM public.user WHERE id = 1;
+
+mutation {
+  login(input: {
+    email:"test@gmail.com",
+    password:"2345",
+  }) {
+    ok
+    error
+  }
+}
 ```

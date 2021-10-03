@@ -6,17 +6,19 @@ import { CreateAccountInput, CreateAccountOutput } from './dtos/create-account.d
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from 'src/jwt/jwt.service';
 
 @Injectable()
 export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private readonly users: Repository<User>,
-		private readonly config: ConfigService
+		private readonly config: ConfigService,
 		/** Dependency Injection
-		 * app.module에서 Global로 ConfigModule을 import했으므로 
+		 * app.module에서 Global로 ConfigModule을 import했으므로
 		 * users.module에서 다시 import해줄 필요 x
 		 */
+		private readonly jwtService: JwtService
 	) {}
 
 	getAll(): Promise<User[]> {
@@ -66,7 +68,7 @@ export class UserService {
 			);
 			return {
 				ok: true,
-				token: 'lalalalaalala',
+				token,
 			};
 		} catch (error) {
 			return {

@@ -38,7 +38,7 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 		}),
 		GraphQLModule.forRoot({
 			autoSchemaFile: true,
-			context: async ({ req }) => ({ user: req['user'] }),	// context is called each req.
+			context: async ({ req }) => ({ user: req['user'] }), // context is called each req.
 		}),
 		UsersModule,
 		JwtModule.forRoot({

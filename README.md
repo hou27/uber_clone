@@ -14,8 +14,10 @@ npm i @nestjs/graphql graphql apollo-server-express
 ```
 npm install --save @nestjs/typeorm typeorm pg
 (https://docs.nestjs.com/techniques/database, https://typeorm.io/#/ 참고)
-```
-
+```  
+  
+[Repository](https://docs.nestjs.com/techniques/database)  
+  
 ### postgresql
 [postgresql](https://www.postgresql.org/)
 [pg_hba.conf](https://mozi.tistory.com/545)

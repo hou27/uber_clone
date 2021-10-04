@@ -65,3 +65,8 @@ npm i --save @nestjs/config
 [JWT](https://jwt.io/)  
 
 [context](https://github.com/apollographql/apollo-server)  
+
+[nestjs Middleware](https://docs.nestjs.com/middleware)  
+
+[nestjs guard](https://docs.nestjs.com/guards)  
+- determine whether a given request will be handled by the route handler or not, depending on certain conditions  

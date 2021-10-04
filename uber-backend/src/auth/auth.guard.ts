@@ -5,12 +5,11 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 export class AuthGuard implements CanActivate {
 	canActivate(context: ExecutionContext) {
 		const gqlContext = GqlExecutionContext.create(context).getContext(); // graphql context는 http의 context와 다르기 때문에 변환이 필요함.
-		console.log(gqlContext);
 		const user = gqlContext['user'];
 		if (!user) {
-			return false;
+			return false; // block req
 		}
-		return true;
+		return true; // continue req
 	}
 }
 

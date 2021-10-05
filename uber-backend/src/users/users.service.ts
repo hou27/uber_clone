@@ -7,6 +7,7 @@ import { LoginInput, LoginOutput } from './dtos/login.dto';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from 'src/jwt/jwt.service';
+import { EditProfileInput } from './dtos/edit-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -84,5 +85,10 @@ export class UserService {
 
 	async findById(id: number): Promise<User> {
 		return this.users.findOne({ id });
+	}
+
+	async editProfile(userId: number, editProfileInput: EditProfileInput) {
+		return this.users.update(userId, { ...editProfileInput });
+		// TypeORM - update : Doesn't check if entity exist in the db.
 	}
 }

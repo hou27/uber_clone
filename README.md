@@ -16,6 +16,8 @@ npm install --save @nestjs/typeorm typeorm pg
 (https://docs.nestjs.com/techniques/database, https://typeorm.io/#/ 참고)
 ```  
   
+[One to One](https://typeorm.io/#/one-to-one-relations)  
+  
 [Repository](https://docs.nestjs.com/techniques/database)  
   
 ### postgresql

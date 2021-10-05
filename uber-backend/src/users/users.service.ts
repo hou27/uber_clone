@@ -87,10 +87,7 @@ export class UserService {
 		return this.users.findOne({ id });
 	}
 
-	async editProfile(
-		userId: number,
-		{ email, password }/* editProfileInput */:  EditProfileInput
-	): Promise<User> {
+	async editProfile(userId: number, { email, password }: EditProfileInput): Promise<User> {
 		// return this.users.update(userId, { ...editProfileInput });
 		// TypeORM - update : Doesn't check if entity exist in the db.
 		// --------- just send a query to db. (update entity X)
@@ -98,10 +95,10 @@ export class UserService {
 
 		// resolve -> use save().
 		const user = await this.users.findOne(userId);
-			
+
 		email ? (user.email = email) : null;
 		password ? (user.password = password) : null;
-		
+
 		return this.users.save(user);
 	}
 }

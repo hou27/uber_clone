@@ -73,3 +73,19 @@ HTTP HEADERS
   "X-JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjMzMjQzNTQwfQ.vYiKS-Yt2fWiB6elSIZgVADPv_odRZZHQc_fsll82m4"
 }
 ```
+
+check editProfile
+```
+mutation {
+  editProfile(input: {
+    password:"didc001!@",
+  }) {
+    ok
+    error
+  }
+}
+
+{
+  "X-JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjMzNDI4OTcxfQ.4MYhW9YaDi6oWr2unMomLjMGz0cuJJdUMBSxecgqdgg"
+}
+```

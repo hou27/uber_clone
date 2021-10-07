@@ -23,7 +23,7 @@ export class User extends CoreEntity {
 	email: string;
 
 	@Field((type) => String)
-	@Column()
+	@Column({ select: false }) // 1. do not select pw(solve rehash problem)
 	password: string;
 
 	@Field((type) => UserRole)
@@ -38,11 +38,14 @@ export class User extends CoreEntity {
 	@BeforeInsert() // Entity Listener
 	@BeforeUpdate() // password need to hashed before save.
 	async hashPassword(): Promise<void> {
-		try {
-			this.password = await bcrypt.hash(this.password, 10 /* saltOrRounds */); // hash
-		} catch (e) {
-			console.log(e);
-			throw new InternalServerErrorException();
+		if (this.password) {
+			// 2. hash the password if there is a pw in the object that give to save
+			try {
+				this.password = await bcrypt.hash(this.password, 10);
+			} catch (e) {
+				console.log(e);
+				throw new InternalServerErrorException();
+			}
 		}
 	}
 

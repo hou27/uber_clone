@@ -106,4 +106,17 @@ export class UserService {
 
 		return this.users.save(user);
 	}
+
+	async verifyEmail(code: string): Promise<boolean> {
+		const verification = await this.verifications.findOne(
+			{ code }, // get relation id
+			/*{ loadRelationIds: true }*/
+			{ relations: ['user'] } // what relation you want to actually load
+		);
+		if (verification) {
+			verification.user.verified = true;
+			this.users.save(verification.user);
+		}
+		return false;
+	}
 }

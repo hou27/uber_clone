@@ -89,3 +89,15 @@ mutation {
   "X-JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjMzNDI4OTcxfQ.4MYhW9YaDi6oWr2unMomLjMGz0cuJJdUMBSxecgqdgg"
 }
 ```
+
+check verifyEmail
+```
+mutation {
+  verifyEmail(input: {
+	code: "60cdbf7f-bb39-44dc-bb5f-1930888d9c46"
+  }){
+    ok
+	error
+  }
+}
+```

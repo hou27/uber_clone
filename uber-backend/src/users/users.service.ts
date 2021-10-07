@@ -8,17 +8,15 @@ import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from 'src/jwt/jwt.service';
 import { EditProfileInput } from './dtos/edit-profile.dto';
+import { Verification } from './entities/verification.entity';
 
 @Injectable()
 export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private readonly users: Repository<User>,
-		// private readonly config: ConfigService,
-		/** Dependency Injection
-		 * app.module에서 Global로 ConfigModule을 import했으므로
-		 * users.module에서 다시 import해줄 필요 x
-		 */
+		@InjectRepository(Verification)
+		private readonly verifications: Repository<Verification>,
 		private readonly jwtService: JwtService
 	) {}
 
@@ -36,7 +34,10 @@ export class UserService {
 			if (exists) {
 				return { ok: false, error: 'There is a user with that email already' };
 			}
-			await this.users.save(this.users.create({ email, password, role }));
+			const user = await this.users.save(this.users.create({ email, password, role }));
+
+			await this.verifications.save(this.verifications.create({ user }));
+
 			return { ok: true };
 		} catch (e) {
 			return { ok: false, error: "Couldn't create account" };
@@ -96,7 +97,11 @@ export class UserService {
 		// resolve -> use save().
 		const user = await this.users.findOne(userId);
 
-		email ? (user.email = email) : null;
+		if (email) {
+			user.email = email;
+			user.verified = false;
+			await this.verifications.save(this.verifications.create({ user }));
+		}
 		password ? (user.password = password) : null;
 
 		return this.users.save(user);

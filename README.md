@@ -74,3 +74,5 @@ npm i --save @nestjs/config
 
 [nestjs guard](https://docs.nestjs.com/guards)  
 - determine whether a given request will be handled by the route handler or not, depending on certain conditions  
+  
+[create Random uuid](https://www.npmjs.com/package/uuid)  

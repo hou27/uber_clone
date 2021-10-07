@@ -13,7 +13,7 @@ export class Verification extends CoreEntity {
 	@Field((type) => String)
 	code: string;
 
-	@OneToOne((type) => User)
+	@OneToOne((type) => User, {onDelete:"CASCADE"}) // define what happens when the user is delete.
 	@JoinColumn() // @JoinColumn which is required and must be set only on one side of the relation.
 	// JoinColumn depences where you going to access your imformation.
 	user: User;

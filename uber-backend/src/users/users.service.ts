@@ -50,7 +50,15 @@ export class UserService {
 	}: LoginInput): Promise<LoginOutput /*{ ok: boolean; error?: string; token?: string }*/> {
 		// make a JWT and give it to the user
 		try {
-			const user = await this.users.findOne({ email });
+			const user = await this.users.findOne(
+				{ email },
+				{ select: ['id', 'password'] }
+				// tell findOne that I want to select things(load from db)
+				
+				// select 하기 전엔 전부 불러와지지만(select: false인 Column제외)
+				// pw를 불러오기 위해 select해주면 select한 것만 불러와짐.
+			);
+			console.log(user);
 			if (!user) {
 				return {
 					ok: false,

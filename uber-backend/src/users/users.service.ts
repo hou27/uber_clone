@@ -119,8 +119,10 @@ export class UserService {
 		// -> can't call BeforeUpdate Hook.
 
 		// resolve -> use save().
+			console.log(userId, email)
 		try {
 			const user = await this.users.findOne(userId);
+			console.log(">:::::::::::::::::::::::::::::", user)
 			if (email) {
 				user.email = email;
 				user.verified = false;

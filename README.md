@@ -78,6 +78,7 @@ npm i --save @nestjs/config
 [create Random uuid](https://www.npmjs.com/package/uuid)  
   
 [mailgun](mailgun.com)  
+[mailgun doc](https://documentation.mailgun.com/en/latest/api-sending.html#sending)  
   
 [got](https://github.com/sindresorhus/got#comparison)  
   

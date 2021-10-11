@@ -78,3 +78,7 @@ npm i --save @nestjs/config
 [create Random uuid](https://www.npmjs.com/package/uuid)  
   
 [mailgun](mailgun.com)  
+  
+[got](https://github.com/sindresorhus/got#comparison)  
+  
+[A library to create readable "multipart/form-data" streams](https://www.npmjs.com/package/form-data)  

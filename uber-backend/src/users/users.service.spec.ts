@@ -7,12 +7,12 @@ import { User } from './entities/user.entity';
 import { Verification } from './entities/verification.entity';
 import { Repository } from 'typeorm';
 
-const mockRepository = {
+const mockRepository = () => ({
 	// fake for Unit Test
 	findOne: jest.fn(), // create Mock Func
 	save: jest.fn(),
 	create: jest.fn(),
-};
+});
 
 const mockJwtService = {
 	sign: jest.fn(),
@@ -45,11 +45,11 @@ describe('UserService', () => {
 				UserService,
 				{
 					provide: getRepositoryToken(User),
-					useValue: mockRepository,
+					useValue: mockRepository(),
 				},
 				{
 					provide: getRepositoryToken(Verification),
-					useValue: mockRepository,
+					useValue: mockRepository(),
 				},
 				{
 					provide: JwtService,
@@ -70,6 +70,12 @@ describe('UserService', () => {
 	});
 
 	describe('createAccount', () => {
+		const createAccountArgs = {
+			email: '',
+			password: '',
+			role: 0,
+		};
+
 		it('should fail if user exists', async () => {
 			// mockResolvedValue is like Promise.resolve(value)
 			usersRepository.findOne.mockResolvedValue({
@@ -77,15 +83,24 @@ describe('UserService', () => {
 				id: 1,
 				email: 'fake value',
 			});
-			const result = await service.createAccount({
-				email: '',
-				password: '',
-				role: 0,
-			});
+			const result = await service.createAccount(createAccountArgs);
 			expect(result).toMatchObject({
 				ok: false,
 				error: 'There is a user with that email already',
 			});
+		});
+
+		it('should create a new user', async () => {
+			usersRepository.findOne.mockResolvedValue(undefined);
+			usersRepository.create.mockReturnValue(createAccountArgs);
+			await service.createAccount(createAccountArgs);
+			expect(usersRepository.create).toHaveBeenCalledTimes(1);
+			/*
+			 * Jest can't know User and Verification Repository are different.
+			 * because object in js is a reference type.
+			 * 
+			 * so make mockRepository as a func type that returns OBJ.
+			 */
 		});
 	});
 

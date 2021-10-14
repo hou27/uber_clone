@@ -16,7 +16,7 @@ const mockRepository = () => ({
 });
 
 const mockJwtService = {
-	sign: jest.fn(),
+	sign: jest.fn(() => 'faked-token'),
 	verify: jest.fn(),
 };
 
@@ -41,8 +41,9 @@ describe('UserService', () => {
 	let usersRepository: MockRepository<User>;
 	let verificationsRepository: MockRepository<Verification>;
 	let mailService: MailService;
+	let jwtService: JwtService;
 
-	/*beforeAll*/beforeEach(async () => {
+	/*beforeAll*/ beforeEach(async () => {
 		// now this test module is recreated before each test.
 		// The number of function calls no longer remains in jest's memory.
 		const module = await Test.createTestingModule({
@@ -70,6 +71,7 @@ describe('UserService', () => {
 		usersRepository = module.get(getRepositoryToken(User));
 		mailService = module.get<MailService>(MailService);
 		verificationsRepository = module.get(getRepositoryToken(Verification));
+		jwtService = module.get<JwtService>(JwtService);
 	});
 
 	it('should be defined', () => {
@@ -153,7 +155,7 @@ describe('UserService', () => {
 			email: 'fake@email.com',
 			password: 'fake.password',
 		};
-		
+
 		it('should fail if user does not exist', async () => {
 			usersRepository.findOne.mockResolvedValue(null); // for Promise method
 
@@ -168,6 +170,30 @@ describe('UserService', () => {
 				ok: false,
 				error: 'User not found',
 			});
+		});
+
+		it('should fail if the password is wrong', async () => {
+			const mockedUser = {
+				checkPassword: jest.fn(() => Promise.resolve(false)), // mock func that returns Promise.
+			};
+			usersRepository.findOne.mockResolvedValue(mockedUser);
+			const result = await service.login(loginArgs);
+			expect(result).toEqual({ ok: false, error: 'Wrong password' });
+		});
+
+		it('should return token if password correct', async () => {
+			const mockedUser = {
+				id: 1,
+				checkPassword: jest.fn(() => Promise.resolve(true)),
+			};
+			usersRepository.findOne.mockResolvedValue(mockedUser);
+			const result = await service.login(loginArgs);
+			// console.log(result);
+			console.log(Promise.resolve(true))
+			console.log(Promise.resolve(false))
+			expect(jwtService.sign).toHaveBeenCalledTimes(1);
+			expect(jwtService.sign).toHaveBeenCalledWith(expect.any(Number));
+			expect(result).toEqual({ ok: true, token: 'faked-token' });
 		});
 	});
 	it.todo('findById');

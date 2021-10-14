@@ -42,7 +42,9 @@ describe('UserService', () => {
 	let verificationsRepository: MockRepository<Verification>;
 	let mailService: MailService;
 
-	beforeAll(async () => {
+	/*beforeAll*/beforeEach(async () => {
+		// now this test module is recreated before each test.
+		// The number of function calls no longer remains in jest's memory.
 		const module = await Test.createTestingModule({
 			providers: [
 				UserService,
@@ -146,7 +148,28 @@ describe('UserService', () => {
 		});
 	});
 
-	it.todo('login');
+	describe('login', () => {
+		const loginArgs = {
+			email: 'fake@email.com',
+			password: 'fake.password',
+		};
+		
+		it('should fail if user does not exist', async () => {
+			usersRepository.findOne.mockResolvedValue(null); // for Promise method
+
+			const result = await service.login(loginArgs);
+
+			expect(usersRepository.findOne).toHaveBeenCalledTimes(1); // beforeAll -> beforeEach
+			expect(usersRepository.findOne).toHaveBeenCalledWith(
+				expect.any(Object),
+				expect.any(Object)
+			);
+			expect(result).toEqual({
+				ok: false,
+				error: 'User not found',
+			});
+		});
+	});
 	it.todo('findById');
 	it.todo('editProfile');
 	it.todo('verifyEmail');

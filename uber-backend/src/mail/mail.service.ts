@@ -10,7 +10,8 @@ export class MailService {
 		// this.sendEmail('testing', 'test');
 	}
 
-	private async sendEmail(
+	// private async sendEmail(
+	async sendEmail( // remove private to test
 		/*to: string,*/
 		subject: string,
 		template: string,

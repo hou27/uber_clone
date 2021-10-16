@@ -16,14 +16,14 @@ const mockRepository = () => ({
 	findOneOrFail: jest.fn(),
 });
 
-const mockJwtService = {
+const mockJwtService = () => ({
 	sign: jest.fn(() => 'faked-token'),
 	verify: jest.fn(),
-};
+});
 
-const mockMailService = {
+const mockMailService = () => ({
 	sendVerificationEmail: jest.fn(),
-};
+});
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 
@@ -60,11 +60,11 @@ describe('UserService', () => {
 				},
 				{
 					provide: JwtService,
-					useValue: mockJwtService,
+					useValue: mockJwtService(),
 				},
 				{
 					provide: MailService,
-					useValue: mockMailService,
+					useValue: mockMailService(),
 				},
 			],
 		}).compile();
@@ -243,7 +243,7 @@ describe('UserService', () => {
 			verificationsRepository.save.mockResolvedValue(newVerification);
 
 			// testing
-			await service.editProfile(editProfileArgs.userId, editProfileArgs.input);
+			const result = await service.editProfile(editProfileArgs.userId, editProfileArgs.input);
 
 			// expecting
 			expect(usersRepository.findOne).toHaveBeenCalledTimes(1);
@@ -254,10 +254,31 @@ describe('UserService', () => {
 			});
 			expect(verificationsRepository.save).toHaveBeenCalledWith(newVerification);
 
+			expect(mailService.sendVerificationEmail).toHaveBeenCalledTimes(1);
 			expect(mailService.sendVerificationEmail).toHaveBeenCalledWith(
 				newUser.email,
 				newVerification.code
 			);
+			
+			expect(result).toEqual({ ok: true });
+		});
+
+		it('should change password', async () => {
+			const editProfileArgs = {
+				userId: 1,
+				input: { password: 'new.password' },
+			};
+			usersRepository.findOne.mockResolvedValue({ password: 'old.password' });
+			const result = await service.editProfile(editProfileArgs.userId, editProfileArgs.input);
+			expect(usersRepository.save).toHaveBeenCalledTimes(1);
+			expect(usersRepository.save).toHaveBeenCalledWith(editProfileArgs.input);
+			expect(result).toEqual({ ok: true });
+		});
+
+		it('should fail on exception', async () => {
+			usersRepository.findOne.mockRejectedValue(new Error());
+			const result = await service.editProfile(1, { email: 'fakeEmail' });
+			expect(result).toEqual({ ok: false, error: 'Could not update profile.' });
 		});
 	});
 

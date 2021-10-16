@@ -124,7 +124,6 @@ export class UserService {
 			if (email) {
 				user.email = email;
 				user.verified = false;
-				const see = this.verifications.create({ user })
 				const verification = await this.verifications.save(
 					this.verifications.create({ user })
 				);

@@ -291,16 +291,11 @@ describe('UserService', () => {
 					verified: false,
 				},
 			};
-			// verificationsRepository.findOne.mockResolvedValue(mockedVerification);
+			
 			verificationsRepository.findOneOrFail.mockResolvedValue(mockedVerification);
 
 			const result = await service.verifyEmail('');
-
-			// expect(verificationsRepository.findOne).toHaveBeenCalledTimes(1);
-			// expect(verificationsRepository.findOne).toHaveBeenCalledWith(
-			// 	expect.any(Object),
-			// 	expect.any(Object)
-			// );
+			
 			expect(verificationsRepository.findOneOrFail).toHaveBeenCalledTimes(1);
 			expect(verificationsRepository.findOneOrFail).toHaveBeenCalledWith(
 				expect.any(Object),

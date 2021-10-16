@@ -61,7 +61,6 @@ host    replication     all             ::1/128                 md5
 ```
 npm i --save @nestjs/config
 ```
-
 [joi for validation](https://joi.dev/api/?v=17.4.2)  
 
 [Mapped types(Entitiy generates  db table, graphql type, dto)](https://docs.nestjs.com/graphql/mapped-types)  

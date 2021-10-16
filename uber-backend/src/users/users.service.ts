@@ -61,7 +61,6 @@ export class UserService {
 				// select 하기 전엔 전부 불러와지지만(select: false인 Column제외)
 				// pw를 불러오기 위해 select해주면 select한 것만 불러와짐.
 			);
-			console.log(user);
 			if (!user) {
 				return {
 					ok: false,
@@ -90,20 +89,20 @@ export class UserService {
 		} catch (error) {
 			return {
 				ok: false,
-				error,
+				error: "Can't log user in.",
 			};
 		}
 	}
 
 	async findById(id: number): Promise<UserProfileOutput> {
 		try {
-			const user = await this.users.findOne({ id });
-			if (user) {
-				return {
-					ok: true,
-					user: user,
-				};
-			}
+			const user = await this.users./*findOne*/findOneOrFail({ id }); // findOneOrFail throw an Error.
+			// if (user) {
+			return {
+				ok: true,
+				user: user,
+			};
+			// }
 		} catch (error) {
 			return { ok: false, error: 'User Not Found' };
 		}
@@ -119,12 +118,13 @@ export class UserService {
 		// -> can't call BeforeUpdate Hook.
 
 		// resolve -> use save().
-			console.log(userId, email)
+		console.log(userId, email)
 		try {
 			const user = await this.users.findOne(userId);
 			if (email) {
 				user.email = email;
 				user.verified = false;
+				const see = this.verifications.create({ user })
 				const verification = await this.verifications.save(
 					this.verifications.create({ user })
 				);

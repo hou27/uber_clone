@@ -114,7 +114,7 @@ export class UserService {
 		// -> can't call BeforeUpdate Hook.
 
 		// resolve -> use save().
-		console.log(userId, email)
+		console.log(userId, email);
 		try {
 			const user = await this.users.findOne(userId);
 			if (email) {
@@ -139,18 +139,30 @@ export class UserService {
 
 	async verifyEmail(code: string): Promise<VerifyEmailOutput> {
 		try {
-			const verification = await this.verifications.findOne(
-				{ code }, // get relation id
-				/*{ loadRelationIds: true }*/
-				{ relations: ['user'] } // what relation you want to actually load
+			// findOne version
+			// const verification = await this.verifications.findOne(
+			// 	{ code }, // get relation id
+			// 	/*{ loadRelationIds: true }*/
+			// 	{ relations: ['user'] } // what relation you want to actually load
+			// );
+			// if (verification) {
+			// 	verification.user.verified = true;
+			// 	this.users.save(verification.user); // verify
+			// 	await this.verifications.delete(verification.id); // delete verification value
+			// 	return { ok: true };
+			// }
+			// return { ok: false, error: 'Verification not found.' };
+			
+			// findOneOrFail version
+			const verification = await this.verifications.findOneOrFail(
+				{code}, {relations: ['user']}
 			);
-			if (verification) {
-				verification.user.verified = true;
-				this.users.save(verification.user); // verify
-				await this.verifications.delete(verification.id); // delete verification value
-				return { ok: true };
-			}
-			return { ok: false, error: 'Verification not found.' };
+			console.log(verification);
+			verification.user.verified = true;
+			this.users.save(verification.user); // verify
+			await this.verifications.delete(verification.id); // delete verification value
+			
+			return { ok: true };
 		} catch (error) {
 			return { ok: false, error: 'Could not verify email.' };
 		}

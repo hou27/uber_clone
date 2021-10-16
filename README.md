@@ -83,3 +83,5 @@ npm i --save @nestjs/config
 [got](https://github.com/sindresorhus/got#comparison)  
   
 [A library to create readable "multipart/form-data" streams](https://www.npmjs.com/package/form-data)  
+
+[Repository | typeorm](https://typeorm.delightful.studio/classes/_repository_repository_.repository.html)  

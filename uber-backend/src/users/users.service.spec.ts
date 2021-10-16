@@ -291,12 +291,18 @@ describe('UserService', () => {
 					verified: false,
 				},
 			};
-			verificationsRepository.findOne.mockResolvedValue(mockedVerification);
+			// verificationsRepository.findOne.mockResolvedValue(mockedVerification);
+			verificationsRepository.findOneOrFail.mockResolvedValue(mockedVerification);
 
 			const result = await service.verifyEmail('');
 
-			expect(verificationsRepository.findOne).toHaveBeenCalledTimes(1);
-			expect(verificationsRepository.findOne).toHaveBeenCalledWith(
+			// expect(verificationsRepository.findOne).toHaveBeenCalledTimes(1);
+			// expect(verificationsRepository.findOne).toHaveBeenCalledWith(
+			// 	expect.any(Object),
+			// 	expect.any(Object)
+			// );
+			expect(verificationsRepository.findOneOrFail).toHaveBeenCalledTimes(1);
+			expect(verificationsRepository.findOneOrFail).toHaveBeenCalledWith(
 				expect.any(Object),
 				expect.any(Object)
 			);
@@ -308,11 +314,11 @@ describe('UserService', () => {
 			expect(result).toEqual({ ok: true });
 		});
 
-		it('should fail on verification not found', async () => {
-			verificationsRepository.findOne.mockResolvedValue(undefined);
-			const result = await service.verifyEmail('');
-			expect(result).toEqual({ ok: false, error: 'Verification not found.' });
-		});
+		// it('should fail on verification not found', async () => {
+		// 	verificationsRepository.findOne.mockResolvedValue(undefined);
+		// 	const result = await service.verifyEmail('');
+		// 	expect(result).toEqual({ ok: false, error: 'Verification not found.' });
+		// });
 
 		it('should fail on exception', async () => {
 			verificationsRepository.findOne.mockRejectedValue(new Error());

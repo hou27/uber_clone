@@ -13,6 +13,8 @@ jest.mock('form-data');
 // 	};
 // });
 
+const TEST_DOMAIN = 'test-domain';
+
 describe('MailService', () => {
 	let service: MailService;
 
@@ -24,7 +26,7 @@ describe('MailService', () => {
 					provide: CONFIG_OPTIONS,
 					useValue: {
 						apiKey: 'test-apiKey',
-						domain: 'test-domain',
+						domain: TEST_DOMAIN,
 						fromEmail: 'test-fromEmail',
 					},
 				},
@@ -44,7 +46,7 @@ describe('MailService', () => {
 				code: 'code',
 			};
 			// service.sendEmail = jest.fn(); // do not mock sendEmail cuz we'll test it later.
-			jest.spyOn(service, 'sendEmail').mockImplementation(async () => {}); // spy function(mock X)
+			jest.spyOn(service, 'sendEmail').mockImplementation(async () => true); // spy function(mock X)
 			/** mockImplementation
 			 * mock every implementations in real func.
 			 * If sendEmail is called, inercept that call i can describe my own implementations.
@@ -62,8 +64,27 @@ describe('MailService', () => {
 	});
 
 	describe('sendEmail', () => {
-		it('send email', () => {
-			const result = service.sendEmail('', '', []);
+		it('send email', async () => {
+			const result = await service.sendEmail('', '', [{ key: 'one', value: 'test' }]);
+			// spying on FormData.prototype
+			const formSpy = jest.spyOn(FormData.prototype, 'append');
+
+			// expect(formSpy).toHaveBeenCalledTimes(5);
+			expect(formSpy).toHaveBeenCalled();
+			expect(got.post).toHaveBeenCalledTimes(1);
+			expect(got.post).toHaveBeenCalledWith(
+				`https://api.mailgun.net/v3/${TEST_DOMAIN}/messages`,
+				expect.any(Object)
+			);
+			expect(result).toBeTruthy/*toEqual(true)*/;
+		});
+
+		it('fails on error', async () => {
+			jest.spyOn(got, 'post').mockImplementation(() => {
+				throw new Error();
+			});
+			const result = await service.sendEmail('', '', []);
+			expect(result).toBeFalsy/*toEqual(false)*/;
 		});
 	});
 });

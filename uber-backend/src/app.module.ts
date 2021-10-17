@@ -18,7 +18,7 @@ import { MailModule } from './mail/mail.module';
 			envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
 			ignoreEnvFile: process.env.NODE_ENV === 'prod', // deploy할 때 env파일을 사용하지 않는 옵션
 			validationSchema: Joi.object({
-				NODE_ENV: Joi.string().valid('dev', 'prod').required(),
+				NODE_ENV: Joi.string().valid('dev', 'prod', 'test').required(),
 				DB_HOST: Joi.string().required(),
 				DB_PORT: Joi.string().required(),
 				DB_USERNAME: Joi.string().required(),

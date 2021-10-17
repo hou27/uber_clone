@@ -17,6 +17,8 @@ export class MailService {
 		template: string,
 		emailVars: EmailVar[]
 	) {
+		console.log(got);	// we can see that got and FromData are mocked.
+		console.log(FormData);
 		const form = new FormData();
 		form.append('from', `Hou27 from Jalapeno <mailgun@${this.options.domain}>`);
 		form.append('to', `starjhjh@naver.com`);

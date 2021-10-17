@@ -3,6 +3,7 @@ clone project
 
 [nestjs](https://docs.nestjs.com/graphql/quick-start#code-first)  
 [TDD](https://media.fastcampus.co.kr/knowledge/dev/tdd/)  
+[Jest](https://jestjs.io/)  
 ## /uber-backend
 ```
 npm i @nestjs/graphql graphql apollo-server-express
@@ -22,6 +23,7 @@ npm install --save @nestjs/typeorm typeorm pg
   
 ### postgresql
 [postgresql](https://www.postgresql.org/)
+[postgresql Doc](https://zetawiki.com/wiki/PostgreSQL,_PAS)  
 [pg_hba.conf](https://mozi.tistory.com/545)
 [pgadmin4_key](https://smoh.tistory.com/404)
 [pgadmin4](http://forum.goorm.io/topic/9056/pgadmin4-%EC%84%A4%EC%B9%98-%EA%B0%80%EB%8A%A5-%EC%97%AC%EB%B6%80-%EC%A7%88%EB%AC%B8/2)

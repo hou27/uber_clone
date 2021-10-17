@@ -6,7 +6,7 @@ import { AppModule } from './../src/app.module';
 describe('UserModule (e2e)', () => {
 	let app: INestApplication;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule({
 			imports: [AppModule],
 		}).compile();
@@ -15,16 +15,15 @@ describe('UserModule (e2e)', () => {
 		await app.init();
 	});
 
+	afterAll(async () => {
+		// fix err 'Jest did not exit one second after the test run has completed.'
+		app.close();
+	});
+
 	it.todo('can createAccount');
 	it.todo('userProfile');
 	it.todo('login');
 	it.todo('me');
 	it.todo('verifyEmail');
 	it.todo('editProfile');
-	// it('/ (GET)', () => {
-	//   return request(app.getHttpServer())
-	//     .get('/')
-	//     .expect(200)
-	//     .expect('Hello World!');
-	// });
 });

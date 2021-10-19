@@ -66,9 +66,9 @@ describe('UserModule (e2e)', () => {
 				})
 				.expect(200)
 				.expect((res) => {
-					console.log(res.body);
-					expect(res.body.data.createAccount.ok).toBe(true);
-					expect(res.body.data.createAccount.error).toBe(null);
+					const { ok, error } = res.body.data.createAccount;
+					expect(ok).toBe(true);
+					expect(error).toBe(null);
 				});
 		});
 
@@ -91,8 +91,9 @@ describe('UserModule (e2e)', () => {
 				})
 				.expect(200)
 				.expect((res) => {
-					expect(res.body.data.createAccount.ok).toBe(false);
-					expect(res.body.data.createAccount.error).toBe(
+					const { ok, error } = res.body.data.createAccount;
+					expect(ok).toBe(false);
+					expect(error).toBe(
 						'There is a user with that email already'
 					);
 				});
@@ -166,7 +167,6 @@ describe('UserModule (e2e)', () => {
 	describe('userProfile', () => {
 		let userId: number;
 		beforeAll(async () => {
-			console.log(await usersRepository.find());
 			const [user] = await usersRepository.find();
 			userId = user.id;
 		});
@@ -174,7 +174,7 @@ describe('UserModule (e2e)', () => {
 		it("should see a user's profile", () => {
 			return request(app.getHttpServer())
 				.post(GRAPHQL_ENDPOINT)
-				.set('X-JWT', jwtToken)	// set header after post
+				.set('X-JWT', jwtToken) // set header after post
 				.send({
 					query: `
 					{
@@ -230,11 +230,7 @@ describe('UserModule (e2e)', () => {
 				})
 				.expect(200)
 				.expect((res) => {
-					const {
-						ok,
-						error,
-						user
-					} = res.body.data.userProfile;
+					const { ok, error, user } = res.body.data.userProfile;
 					expect(ok).toBe(false);
 					expect(error).toBe('User Not Found');
 					expect(user).toBe(null);
@@ -242,7 +238,49 @@ describe('UserModule (e2e)', () => {
 		});
 	});
 
-	it.todo('me');
+	describe('me', () => {
+		it('should find my profile', () => {
+			return request(app.getHttpServer())
+				.post(GRAPHQL_ENDPOINT)
+				.set('X-JWT', jwtToken)
+				.send({
+					query: `
+					{
+					  me {
+						email
+					  }
+					}
+				  `,
+				})
+				.expect(200)
+				.expect((res) => {
+					const { email } = res.body.data.me;
+					expect(email).toBe(testUser.email);
+				});
+		});
+		it('should not allow logged out user', () => {
+			return request(app.getHttpServer())
+				.post(GRAPHQL_ENDPOINT)
+				.send({
+					query: `
+					{
+					  me {
+						email
+					  }
+					}
+				  `,
+				})
+				.expect(200)
+				.expect((res) => {
+					const {
+						body: { errors },
+					} = res;
+					const [error] = errors;
+					expect(error.message).toBe('Forbidden resource');
+				});
+		});
+	});
+
 	it.todo('verifyEmail');
 	it.todo('editProfile');
 });

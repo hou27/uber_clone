@@ -18,7 +18,7 @@ registerEnumType(UserRole, { name: 'UserRole' }); // for graphql
 @Entity()
 export class User extends CoreEntity {
 	@Field((type) => String)
-	@Column()
+	@Column({ unique: true }) // email should be unique.
 	@IsEmail()
 	email: string;
 

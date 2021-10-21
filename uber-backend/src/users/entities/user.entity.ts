@@ -3,7 +3,7 @@ import { CoreEntity } from 'src/common/entities/core.entity';
 import { Column, Entity, BeforeInsert, BeforeUpdate } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
-import { IsEmail, IsEnum } from 'class-validator';
+import { IsBoolean, IsEmail, IsEnum, IsString } from 'class-validator';
 
 enum UserRole {
 	Client,
@@ -24,6 +24,7 @@ export class User extends CoreEntity {
 
 	@Field((type) => String)
 	@Column({ select: false }) // 1. do not select pw(solve rehash problem)
+	@IsString()
 	password: string;
 
 	@Field((type) => UserRole)
@@ -33,6 +34,7 @@ export class User extends CoreEntity {
 
 	@Column({ default: false })
 	@Field((type) => Boolean)
+	@IsBoolean()
 	verified: boolean;
 
 	@BeforeInsert() // Entity Listener

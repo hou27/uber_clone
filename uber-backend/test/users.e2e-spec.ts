@@ -243,7 +243,8 @@ describe('UserModule (e2e)', () => {
 	});
 
 	describe('editProfile', () => {
-		const NEW_EMAIL = 'fake@new.com';
+		const NEW_EMAIL = 'fake@new.com',
+			  NEW_PW = 'fakepw';
 		it('should change email', () => {
 			return privateTest(`
 					mutation {
@@ -276,7 +277,24 @@ describe('UserModule (e2e)', () => {
 					expect(email).toBe(NEW_EMAIL);
 				});
 		});
-		it.todo('should change password');
+		it('should change password', () => {
+			return privateTest(`
+					mutation {
+					  editProfile(input:{
+						password: "${NEW_PW}"
+					  }) {
+						ok
+						error
+					  }
+					}
+				`)
+				.expect(200)
+				.expect((res) => {
+					const { ok, error } = res.body.data.editProfile;
+					expect(ok).toBe(true);
+					expect(error).toBe(null);
+				});
+		});
 	});
 
 	describe('verifyEmail', () => {

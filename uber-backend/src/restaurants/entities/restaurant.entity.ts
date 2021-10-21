@@ -1,10 +1,12 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsString, Length } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Category } from './cetegory.entity';
+import { User } from 'src/users/entities/user.entity';
 
-@InputType({ isAbstract: true }) // isAbstract : do not add to Schema
+// Fix err : Schema must contain uniquely named types but contains multiple types named "Restaurant".
+@InputType('RestaurantInputType', { isAbstract: true }) // isAbstract : do not add to Schema
 @ObjectType()
 @Entity()
 export class Restaurant extends CoreEntity {
@@ -24,7 +26,17 @@ export class Restaurant extends CoreEntity {
 	@IsString()
 	address: string;
 
-	@Field((type) => Category)
-	@ManyToOne((type) => Category, (category) => category.restaurants)
+	@Field((type) => Category, { nullable: true })
+	// https://typeorm.io/#/many-to-one-one-to-many-relations
+	@ManyToOne((type) => Category, (category) => category.restaurants, {
+		// restaurant doesn't have to have category.
+		// If we delete a category, we don't want to delete a restaurant.
+		nullable: true,
+		onDelete: 'SET NULL',
+	})
 	category: Category;
+
+	@Field((type) => User)
+	@ManyToOne((type) => User, (user) => user.restaurants)
+	owner: User;
 }

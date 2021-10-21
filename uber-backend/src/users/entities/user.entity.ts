@@ -1,9 +1,10 @@
 import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { Column, Entity, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Column, Entity, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 import { IsBoolean, IsEmail, IsEnum, IsString } from 'class-validator';
+import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 
 enum UserRole {
 	Client,
@@ -13,7 +14,8 @@ enum UserRole {
 
 registerEnumType(UserRole, { name: 'UserRole' }); // for graphql
 
-@InputType({ isAbstract: true })
+// Fix err : Schema must contain uniquely named types but contains multiple types named "User".
+@InputType('UserInputType', { isAbstract: true })
 @ObjectType()
 @Entity()
 export class User extends CoreEntity {
@@ -36,6 +38,10 @@ export class User extends CoreEntity {
 	@Field((type) => Boolean)
 	@IsBoolean()
 	verified: boolean;
+
+	@Field((type) => [Restaurant])
+	@OneToMany((type) => Restaurant, (restaurant) => restaurant.owner)
+	restaurants: Restaurant[];
 
 	@BeforeInsert() // Entity Listener
 	@BeforeUpdate() // password need to hashed before save.

@@ -54,6 +54,8 @@ export class RestaurantService {
 		owner:User,
 		editRestaurantInput: EditRestaurantInput
 	): Promise<EditRestaurantOutput> {
-		
+		return {
+			ok: true
+		}
 	}
 }

@@ -6,6 +6,10 @@ import { CreateRestaurantInput, CreateRestaurantOutput } from './dtos/create-res
 import { Restaurant } from './entities/restaurant.entity';
 import { RestaurantService } from './restaurants.service';
 import { SetMetadata } from '@nestjs/common';
+import {
+  EditRestaurantInput,
+  EditRestaurantOutput,
+} from './dtos/edit-restaurant.dto';
 
 @Resolver((of) => Restaurant)
 export class RestaurantResolver {
@@ -18,5 +22,16 @@ export class RestaurantResolver {
 		@Args('input') createRestaurantInput: CreateRestaurantInput
 	): Promise<CreateRestaurantOutput> {
 		return this.restaurantService.createRestaurant(authUser, createRestaurantInput);
+	}
+
+	@Mutation(returns => EditRestaurantOutput)
+	@Role(['Owner'])
+	editRestaurant(
+		@AuthUser() authUser: User,
+		@Args('input') editRestaurantInput: EditRestaurantInput
+	): EditRestaurantOutput {
+		return {
+			ok: true
+		}
 	}
 }

@@ -10,33 +10,35 @@ import { User } from 'src/users/entities/user.entity';
 @ObjectType()
 @Entity()
 export class Restaurant extends CoreEntity {
-	@Field((type) => String)
-	@Column()
-	@IsString()
-	@Length(5)
-	name: string;
+  @Field((type) => String)
+  @Column()
+  @IsString()
+  @Length(5)
+  name: string;
 
-	@Field((type) => String)
-	@Column()
-	@IsString()
-	coverImg: string;
+  @Field((type) => String)
+  @Column()
+  @IsString()
+  coverImg: string;
 
-	@Field((type) => String, { defaultValue: '수지' })
-	@Column()
-	@IsString()
-	address: string;
+  @Field((type) => String, { defaultValue: '수지' })
+  @Column()
+  @IsString()
+  address: string;
 
-	@Field((type) => Category, { nullable: true })
-	// https://typeorm.io/#/many-to-one-one-to-many-relations
-	@ManyToOne((type) => Category, (category) => category.restaurants, {
-		// restaurant doesn't have to have category.
-		// If we delete a category, we don't want to delete a restaurant.
-		nullable: true,
-		onDelete: 'SET NULL',
-	})
-	category: Category;
+  @Field((type) => Category, { nullable: true })
+  // https://typeorm.io/#/many-to-one-one-to-many-relations
+  @ManyToOne((type) => Category, (category) => category.restaurants, {
+    // restaurant doesn't have to have category.
+    // If we delete a category, we don't want to delete a restaurant.
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  category: Category;
 
-	@Field((type) => User)
-	@ManyToOne((type) => User, (user) => user.restaurants)
-	owner: User;
+  @Field((type) => User)
+  @ManyToOne((type) => User, (user) => user.restaurants, {
+    onDelete: 'CASCADE', // if the user is deleted, then also going to delete restaurant.
+  })
+  owner: User;
 }

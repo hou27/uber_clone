@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsString, Length } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
 import { Category } from './cetegory.entity';
 import { User } from 'src/users/entities/user.entity';
 
@@ -41,4 +41,7 @@ export class Restaurant extends CoreEntity {
     onDelete: 'CASCADE', // if the user is deleted, then also going to delete restaurant.
   })
   owner: User;
+
+  @RelationId((restaurant: Restaurant) => restaurant.owner) // Loads id (or ids) of specific relations into properties. For example, if you have a many-to-one category in your Post entity, you can have a new category id by marking a new property with @RelationId.
+  ownerId: number;
 }

@@ -11,7 +11,7 @@ import {
   EditRestaurantOutput,
 } from './dtos/edit-restaurant.dto';
 import { Restaurant } from './entities/restaurant.entity';
-import { Category } from './entities/cetegory.entity';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class RestaurantService {
@@ -26,11 +26,13 @@ export class RestaurantService {
     const categoryName = name.trim().toLowerCase();
     const categorySlug = categoryName.replace(/ /g, '-');
     let category = await this.categories.findOne({ slug: categorySlug });
+
     if (!category) {
       category = await this.categories.save(
         this.categories.create({ slug: categorySlug, name: categoryName }),
       );
     }
+
     return category;
   }
 

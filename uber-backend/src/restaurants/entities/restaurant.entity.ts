@@ -2,7 +2,7 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsString, Length } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
-import { Category } from './cetegory.entity';
+import { Category } from './category.entity';
 import { User } from 'src/users/entities/user.entity';
 
 // Fix err : Schema must contain uniquely named types but contains multiple types named "Restaurant".

@@ -2,6 +2,7 @@ import {
   Args,
   Int,
   Mutation,
+  Parent,
   Query,
   ResolveField,
   Resolver,
@@ -70,9 +71,11 @@ export class CategoryResolver {
   constructor(private readonly restaurantService: RestaurantService) {}
 
   // computed field (dynamic field)
+  // This isn't that save on db or entity
   @ResolveField((type) => Int) // make a field that calculated every req.
-  restaurantCount(): number {
-    return 80;
+  restaurantCount(@Parent() category: Category): Promise<number> {
+    // get Parent
+    return this.restaurantService.countRestaurants(category);
   }
 
   @Query((type) => AllCategoriesOutput)

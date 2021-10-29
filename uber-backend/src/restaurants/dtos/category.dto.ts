@@ -1,7 +1,10 @@
 import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Category } from '../entities/category.entity';
 import { Restaurant } from '../entities/restaurant.entity';
-import { PaginationInput, PaginationOutput } from './pagination.dto';
+import {
+  PaginationInput,
+  PaginationOutput,
+} from '../../common/dtos/pagination.dto';
 
 @InputType()
 export class CategoryInput extends PaginationInput {

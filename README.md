@@ -1,32 +1,42 @@
 # uber_clone
+
 clone project
 
 [nestjs](https://docs.nestjs.com/graphql/quick-start#code-first)  
 [TDD](https://media.fastcampus.co.kr/knowledge/dev/tdd/)  
-[Jest](https://jestjs.io/)  
+[Jest](https://jestjs.io/)
+
 ## /uber-backend
+
 ```
 npm i @nestjs/graphql graphql apollo-server-express
 ```
 
 ### Type ORM
+
 [TypeORM](https://typeorm.io/#/)
+
 - Object Relational Mapping(객체 관계 매핑)
+
 ```
 npm install --save @nestjs/typeorm typeorm pg
 (https://docs.nestjs.com/techniques/database, https://typeorm.io/#/ 참고)
-```  
-  
-[One to One](https://typeorm.io/#/one-to-one-relations)  
-  
-[Repository](https://docs.nestjs.com/techniques/database)  
-  
+```
+
+[One to One](https://typeorm.io/#/one-to-one-relations)
+
+[Repository](https://docs.nestjs.com/techniques/database)
+
+[Like](https://www.tutorialspoint.com/sql/sql-like-clause.htm)
+
 ### postgresql
+
 [postgresql](https://www.postgresql.org/)
 [postgresql Doc](https://zetawiki.com/wiki/PostgreSQL,_PAS)  
 [pg_hba.conf](https://mozi.tistory.com/545)
 [pgadmin4_key](https://smoh.tistory.com/404)
 [pgadmin4](http://forum.goorm.io/topic/9056/pgadmin4-%EC%84%A4%EC%B9%98-%EA%B0%80%EB%8A%A5-%EC%97%AC%EB%B6%80-%EC%A7%88%EB%AC%B8/2)
+
 ```
 install in goorm.io
 
@@ -35,17 +45,18 @@ install in goorm.io
 database server using:
 
     /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
-	
+
 	/usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main stop -m fast
 ```
+
 ```
 (pg_hba.conf default setting)
 
 # Database administrative login by Unix domain socket
 local   all             postgres                                peer
- 
+
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
- 
+
 # "local" is for Unix domain socket connections only
 local   all             all                                     peer
 # IPv4 local connections:
@@ -60,29 +71,32 @@ host    replication     all             ::1/128                 md5
 ```
 
 [like dotenv in nestjs](https://docs.nestjs.com/techniques/configuration)
+
 ```
 npm i --save @nestjs/config
 ```
-[joi for validation](https://joi.dev/api/?v=17.4.2)  
 
-[Mapped types(Entitiy generates  db table, graphql type, dto)](https://docs.nestjs.com/graphql/mapped-types)  
+[joi for validation](https://joi.dev/api/?v=17.4.2)
 
-[JWT](https://jwt.io/)  
+[Mapped types(Entitiy generates db table, graphql type, dto)](https://docs.nestjs.com/graphql/mapped-types)
 
-[context](https://github.com/apollographql/apollo-server)  
+[JWT](https://jwt.io/)
 
-[nestjs Middleware](https://docs.nestjs.com/middleware)  
+[context](https://github.com/apollographql/apollo-server)
 
-[nestjs guard](https://docs.nestjs.com/guards)  
-- determine whether a given request will be handled by the route handler or not, depending on certain conditions  
-  
-[create Random uuid](https://www.npmjs.com/package/uuid)  
-  
+[nestjs Middleware](https://docs.nestjs.com/middleware)
+
+[nestjs guard](https://docs.nestjs.com/guards)
+
+- determine whether a given request will be handled by the route handler or not, depending on certain conditions
+
+[create Random uuid](https://www.npmjs.com/package/uuid)
+
 [mailgun](mailgun.com)  
-[mailgun doc](https://documentation.mailgun.com/en/latest/api-sending.html#sending)  
-  
-[got](https://github.com/sindresorhus/got#comparison)  
-  
-[A library to create readable "multipart/form-data" streams](https://www.npmjs.com/package/form-data)  
+[mailgun doc](https://documentation.mailgun.com/en/latest/api-sending.html#sending)
 
-[Repository | typeorm](https://typeorm.delightful.studio/classes/_repository_repository_.repository.html)  
+[got](https://github.com/sindresorhus/got#comparison)
+
+[A library to create readable "multipart/form-data" streams](https://www.npmjs.com/package/form-data)
+
+[Repository | typeorm](https://typeorm.delightful.studio/classes/_repository_repository_.repository.html)

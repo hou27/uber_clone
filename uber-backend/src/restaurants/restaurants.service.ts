@@ -231,7 +231,9 @@ export class RestaurantService {
     restaurantId,
   }: RestaurantInput): Promise<RestaurantOutput> {
     try {
-      const restaurant = await this.restaurants.findOne(restaurantId);
+      const restaurant = await this.restaurants.findOne(restaurantId, {
+        relations: ['menu'],
+      });
       if (!restaurant) {
         return {
           ok: false,
@@ -306,7 +308,7 @@ export class RestaurantService {
       if (owner.id !== restaurant.ownerId) {
         return {
           ok: false,
-          error: "You can't do that.",
+          error: 'You have no permission to do that.',
         };
       }
       await this.dishes.save(

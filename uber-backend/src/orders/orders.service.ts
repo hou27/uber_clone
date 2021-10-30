@@ -42,10 +42,9 @@ export class OrderService {
       }
       console.log(`Dish price: ${dish.price}`);
       for (const itemOption of item.options) {
-        const dishOption = dish.options.find((dishOption) => {
-          dishOption.name === itemOption.name;
-          console.log(dishOption.name, itemOption.name);
-        });
+        const dishOption = dish.options.find(
+          (dishOption) => dishOption.name === itemOption.name,
+        );
 
         console.log('check :: ', dishOption);
         if (dishOption) {

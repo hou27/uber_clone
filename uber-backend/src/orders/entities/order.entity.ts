@@ -40,13 +40,16 @@ export class Order extends CoreEntity {
   })
   driver?: User;
 
-  @Field((type) => Restaurant)
-  @ManyToOne((type) => Restaurant, (restaurant) => restaurant.orders, // this is only needs when you want to be able to access to relationship on the inverse side.
-   {
-    onDelete: 'SET NULL',
-    nullable: true,
-  })
-  restaurant: Restaurant;
+  @Field((type) => Restaurant, { nullable: true })
+  @ManyToOne(
+    (type) => Restaurant,
+    (restaurant) => restaurant.orders, // this is only needs when you want to be able to access to relationship on the inverse side.
+    {
+      onDelete: 'SET NULL',
+      nullable: true,
+    },
+  )
+  restaurant?: Restaurant;
 
   @Field((type) => [OrderItem])
   @ManyToMany((type) => OrderItem) // Many-to-many is a relation where A contains multiple instances of B, and B contain multiple instances of A.
@@ -58,7 +61,7 @@ export class Order extends CoreEntity {
   @IsNumber()
   total?: number;
 
-  @Column({ type: 'enum', enum: OrderStatus })
+  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.Pending })
   @Field((type) => OrderStatus)
   @IsEnum(OrderStatus)
   status: OrderStatus;

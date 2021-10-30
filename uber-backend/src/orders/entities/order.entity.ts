@@ -5,11 +5,13 @@ import {
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
+import { IsEnum, IsNumber } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { Dish } from 'src/restaurants/entities/dish.entity';
+import { Dish, DishOption } from 'src/restaurants/entities/dish.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import { OrderItem } from './order-item.entity';
 
 export enum OrderStatus {
   Pending = 'Pending',
@@ -39,22 +41,25 @@ export class Order extends CoreEntity {
   driver?: User;
 
   @Field((type) => Restaurant)
-  @ManyToOne((type) => Restaurant, (restaurant) => restaurant.orders, {
+  @ManyToOne((type) => Restaurant, (restaurant) => restaurant.orders, // this is only needs when you want to be able to access to relationship on the inverse side.
+   {
     onDelete: 'SET NULL',
     nullable: true,
   })
   restaurant: Restaurant;
 
-  @Field((type) => [Dish])
-  @ManyToMany((type) => Dish) // Many-to-many is a relation where A contains multiple instances of B, and B contain multiple instances of A.
+  @Field((type) => [OrderItem])
+  @ManyToMany((type) => OrderItem) // Many-to-many is a relation where A contains multiple instances of B, and B contain multiple instances of A.
   @JoinTable() // @JoinTable() is required for @ManyToMany relations. You must put @JoinTable on one (owning) side of relation.
-  dishes: Dish[];
+  items: OrderItem[];
 
   @Column({ nullable: true })
   @Field((type) => Float, { nullable: true })
+  @IsNumber()
   total?: number;
 
   @Column({ type: 'enum', enum: OrderStatus })
   @Field((type) => OrderStatus)
+  @IsEnum(OrderStatus)
   status: OrderStatus;
 }

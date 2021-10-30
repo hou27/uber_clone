@@ -4,19 +4,19 @@ import { DishOption } from 'src/restaurants/entities/dish.entity';
 
 @InputType()
 class CreateOrderItemInput {
-  @Field(type => Int)
+  @Field((type) => Int)
   dishId: number;
 
-  @Field(type => DishOption, { nullable: true })
+  @Field((type) => [DishOption], { nullable: true })
   options?: DishOption[];
 }
 
 @InputType()
 export class CreateOrderInput {
-  @Field(type => Int)
+  @Field((type) => Int)
   restaurantId: number;
 
-  @Field(type => [CreateOrderItemInput])
+  @Field((type) => [CreateOrderItemInput])
   items: CreateOrderItemInput[];
 }
 

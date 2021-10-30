@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { ILike, Like, Raw, Repository } from 'typeorm';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
@@ -25,6 +25,8 @@ import {
   SearchRestaurantOutput,
 } from './dtos/search-restaurant.dto';
 import { RestaurantInput, RestaurantOutput } from './dtos/restaurant.dto';
+import { CreateDishInput, CreateDishOutput } from './dtos/create-dish.dto';
+import { Dish } from './entities/dish.entity';
 
 @Injectable()
 export class RestaurantService {
@@ -33,6 +35,9 @@ export class RestaurantService {
     private readonly restaurants: Repository<Restaurant>,
 
     private readonly categories: /*Repository<Category>*/ CategoryRepository, // change type to Custom repository
+
+    @InjectRepository(Dish)
+    private readonly dishes: Repository<Dish>,
   ) {}
 
   async getOrCreateCategory(name: string): Promise<Category> {
@@ -254,15 +259,68 @@ export class RestaurantService {
 
       - The percent sign (%)
       - The underscore (_)
+
+      For those who use MySQL, LIKE is already case-insensitive. If you want to search case-sensitively, you have to use BINARY.
      */
+
+    // ILike(`%${query}%`) insensitive like
+    // Raw allows to use raw query
+
+    //Raw((name) => `${name} ILIKE '%${query}%'`) == ILike(`%${query}%`) ==  Raw(name => `${name} LIKE BINARY '%${query}%'`)
     try {
       const [restaurants, totalResults] = await this.restaurants.findAndCount({
         where: {
-          name: Like(`%${query}%`),
+          name: Raw(
+            (name) => `${name} ILIKE '%${query}%'`,
+          ) /* Like(`%${query}%`), */,
         },
+        skip: (page - 1) * 25,
+        take: 25,
       });
-    } catch {
+      return {
+        ok: true,
+        restaurants,
+        totalResults,
+        totalPages: Math.ceil(totalResults / 25),
+      };
+    } catch (e) {
+      console.log(e);
       return { ok: false, error: 'Could not search for restaurants' };
+    }
+  }
+
+  async createDish(
+    owner: User,
+    createDishInput: CreateDishInput,
+  ): Promise<CreateDishOutput> {
+    try {
+      const restaurant = await this.restaurants.findOne(
+        createDishInput.restaurantId,
+      );
+      if (!restaurant) {
+        return {
+          ok: false,
+          error: 'Restaurant not found',
+        };
+      }
+      if (owner.id !== restaurant.ownerId) {
+        return {
+          ok: false,
+          error: "You can't do that.",
+        };
+      }
+      await this.dishes.save(
+        this.dishes.create({ ...createDishInput, restaurant }),
+      );
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        ok: false,
+        error: 'Could not create dish',
+      };
     }
   }
 }

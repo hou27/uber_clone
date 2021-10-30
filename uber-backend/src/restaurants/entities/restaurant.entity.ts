@@ -1,9 +1,10 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsString, Length } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { Category } from './category.entity';
 import { User } from 'src/users/entities/user.entity';
+import { Dish } from './dish.entity';
 
 // Fix err : Schema must contain uniquely named types but contains multiple types named "Restaurant".
 @InputType('RestaurantInputType', { isAbstract: true }) // isAbstract : do not add to Schema
@@ -44,4 +45,8 @@ export class Restaurant extends CoreEntity {
 
   @RelationId((restaurant: Restaurant) => restaurant.owner) // Loads id (or ids) of specific relations into properties. For example, if you have a many-to-one category in your Post entity, you can have a new category id by marking a new property with @RelationId.
   ownerId: number;
+
+  @Field((type) => [Dish], { nullable: true })
+  @OneToMany((type) => Dish, (dish) => dish.restaurant)
+  menu?: Dish[];
 }

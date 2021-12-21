@@ -38,7 +38,7 @@ npm install --save @nestjs/typeorm typeorm pg
 [pgadmin4](http://forum.goorm.io/topic/9056/pgadmin4-%EC%84%A4%EC%B9%98-%EA%B0%80%EB%8A%A5-%EC%97%AC%EB%B6%80-%EC%A7%88%EB%AC%B8/2)
 
 ```
-install in goorm.io
+install
 
 	sudo apt update && sudo apt install postgresql postgresql-contrib
 

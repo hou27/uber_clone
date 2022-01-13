@@ -6,8 +6,8 @@ import { UserService } from './users.service';
 import { Verification } from './entities/verification.entity';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([User, Verification])],
-	providers: [UserResolver, UserService],
-	exports: [UserService],
+  imports: [TypeOrmModule.forFeature([User, Verification])],
+  providers: [UserResolver, UserService],
+  exports: [UserService],
 })
 export class UsersModule {}

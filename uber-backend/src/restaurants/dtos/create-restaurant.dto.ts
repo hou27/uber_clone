@@ -8,7 +8,7 @@ export class CreateRestaurantInput extends PickType(Restaurant, [
   'coverImg',
   'address',
 ]) {
-  @Field(type => String)
+  @Field((type) => String)
   categoryName: string;
 }
 

@@ -1,3 +1,3 @@
 export interface JwtModuleOptions {
-	privateKey: string;
+  privateKey: string;
 }

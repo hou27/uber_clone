@@ -5,21 +5,21 @@ import { JwtService } from './jwt.service';
 
 @Injectable()
 export class JwtMiddleware implements NestMiddleware {
-	constructor(
-		private readonly jwtService: JwtService,
-		private readonly userService: UserService
-	) {}
-	async use(req: Request, res: Response, next: NextFunction) {
-		if ('x-jwt' in req.headers) {
-			const token = req.headers['x-jwt'];
-			try {
-				const decoded = this.jwtService.verify(token.toString());
-				if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
-					const { user, ok } = await this.userService.findById(decoded['id']);
-					ok ? req['user'] = user : null; // findById return 값 변화에 따른 수정
-				}
-			} catch (e) {}
-		}
-		next();
-	}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly userService: UserService,
+  ) {}
+  async use(req: Request, res: Response, next: NextFunction) {
+    if ('x-jwt' in req.headers) {
+      const token = req.headers['x-jwt'];
+      try {
+        const decoded = this.jwtService.verify(token.toString());
+        if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
+          const { user, ok } = await this.userService.findById(decoded['id']);
+          ok ? (req['user'] = user) : null; // findById return 값 변화에 따른 수정
+        }
+      } catch (e) {}
+    }
+    next();
+  }
 }
